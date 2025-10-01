@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Espacio</title>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* Canvas de brillitos: importantísimo pointer-events:none para no bloquear clics */
+    #brillitos {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;            /* entre la imagen y el texto */
+      pointer-events: none;  /* permite clicar en los enlaces debajo */
+    }
+.frase {
+  font-size: 20px;
+  margin-top: 15px;
+  font-style: italic;
+  color: #f0e6ff;
+  text-shadow: 0 0 5px #000;
+}
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: url("https://i.pinimg.com/1200x/95/94/34/95943410d2aee7690bc2d0032882d4b4.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Barra de navegación - z-index alto para que esté siempre clicable */
+    nav {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      text-align: center;
+      padding: 15px 0;
+      z-index: 30;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    nav a:hover { color: #ffd700; }
+
+    /* Texto - arriba del canvas */
+    .texto {
+      flex: 1;
+      padding: 80px 50px;
+      color: white;
+      position: relative;
+      z-index: 20;
+    }
+
+    .texto h2 {
+      font-size: 40px;
+      margin: 0;
+      font-family: 'Great Vibes', cursive;
+      color: #c8b273;
+      text-shadow: 0 0 2px #000, 0 0 5px #ffd700;
+    }
+
+.texto h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff8, 0 0 30px #ff0;
+  animation: brillar 2s infinite alternate, flotarTexto 4s ease-in-out infinite;
+}
+
+/* Efecto de brillo (ya lo tenías) */
+@keyframes brillar {
+  from { text-shadow: 0 0 5px #fff, 0 0 15px #ff8, 0 0 25px #ff0; }
+  to   { text-shadow: 0 0 20px #fff, 0 0 40px #ffd700, 0 0 100px #ffa500; }
+}
+
+/* Nuevo efecto flotante */
+@keyframes flotarTexto {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.imagen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  animation: aparecerImagen 2s ease-in-out;
+}
+
+@keyframes aparecerImagen {
+  from { 
+    opacity: 0; 
+    transform: translateY(50px); /* entra desde la derecha */
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+    .imagen img {
+      max-width: 80%;
+      height: auto;
+      filter: drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 40px #ffa500);
+    }
+.boton {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px 30px;
+  background: url("https://i.pinimg.com/736x/3c/69/6c/3c696c01757a241ce3cbd2154fa64448.jpg") no-repeat center/cover;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 0 15px #ffd700;
+  transition: 0.3s;
+  border: 2px solid white;
+}
+.boton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px #ff69b4;
+  filter: brightness(1.2);
+}
+.texto {
+  animation: aparecer 2s ease-in-out;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  text-align: center;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  font-style: italic;
+}
+.tarjetas {
+  display: flex;
+  flex-direction: column; /* Ahora en vertical */
+  align-items: flex-start; /* Alineadas a la izquierda */
+  margin: 50px;
+  gap: 20px;
+}
+
+.tarjeta {
+  background: rgba(0,0,0,0.6); /* Fondo semitransparente por defecto */
+  padding: 15px;
+  border-radius: 15px;
+  color: white;
+  width: 250px;
+  text-align: left;
+  box-shadow: 0 0 10px #ffd700;
+  transition: 0.3s;
+  background-size: cover;   /* La imagen cubre toda la tarjeta */
+  background-position: center;
+}
+.tarjeta:hover {
+  transform: translateX(10px);
+  background: rgba(255,215,0,0.8); /* Esto puedes quitarlo si quieres mantener la imagen al pasar el mouse */
+  color: black;
+  cursor: pointer;
+}
+
+.imagen img {
+  max-width: 80%;
+  height: auto;
+  filter: drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 40px #ffa500);
+  animation: flotar 4s ease-in-out infinite; /* 👈 animación */
+}
+
+@keyframes flotar {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+.tarjeta {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aparecerTarjeta 1s ease forwards;
+
+}
+.tarjeta:nth-child(2) { animation-delay: 0.3s; }
+.tarjeta:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes aparecerTarjeta {
+  to { opacity: 1; transform: translateY(0); }
+}
+body {
+  cursor: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Plain_Yellow_Star.png/32px-Plain_Yellow_Star.png'), auto;
+}
+.imagen img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 30px #fff) drop-shadow(0 0 60px #ffd700);
+  transition: 0.3s;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Menú (nota: href apunta a archivos sin espacios/acentos) -->
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="sobre-mi.html">Sobre mí</a>
+    <a href="pasatiempos.html">Pasatiempos</a>
+    <a href="artistas.html">Artistas</a>
+  </nav>
+
+  <div class="texto">
+    <h2>✨ Te doy la bienvenida a...</h2>
+    <h1>Mi Espacio</h1>
+<p class="frase">Aquí encontrarás un pedacito de lo que me gusta y quién soy 🌠</p>
+<a href="sobre-mi.html" class="boton">Explora mi mundo ✨</a>
+  </div>
+
+  <div class="imagen">
+    <img src="https://i.pinimg.com/736x/8c/29/fa/8c29fa525120292eb296ba218282d59c.jpg" alt="Dibujo saludando">
+  </div>
+<div class="tarjetas">
+ <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/3vkCueOmm7xQDoJ17W1Pm3?utm_source=generator&theme=0" 
+    width="300" height="80" frameBorder="0" allowfullscreen="" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy"></iframe>
+<div class="tarjeta" style="background-image: url(https://i.pinimg.com/736x/4c/6d/08/4c6d088724cd7004c98d94c65e5c0b72.jpg);">
+  <h3>🎨 Pasatiempos</h3>
+  <p>Lo que me gusta hacer en mi tiempo libre.</p>
+</div>
+
+<div class="tarjeta" style="background-image: url(https://i.pinimg.com/736x/77/74/cf/7774cf5e3c42023ec9549e75ec958351.jpg);">
+  <h3>🎶 Artistas</h3>
+  <p>Mis cantantes y bandas favoritas.</p>
+</div>
+
+</div>
+
+  <canvas id="brillitos"></canvas>
+
+  <script>
+    const canvas = document.getElementById("brillitos");
+    const ctx = canvas.getContext("2d");
+    function ajustar() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    ajustar();
+    window.addEventListener('resize', ajustar);
+
+    function random(min, max) { return Math.random() * (max - min) + min; }
+    let estrellas = [];
+    for (let i = 0; i < 100; i++) {
+      estrellas.push({ x: random(0, canvas.width), y: random(0, canvas.height), r: random(1,3), dx: random(-0.5,0.5), dy: random(-0.5,0.5) });
+    }
+    function animar() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+for (let e of estrellas) {
+  ctx.beginPath();
+  ctx.fillStyle = `rgba(255, 255, 255, ${Math.random()})`;
+  ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+  ctx.fill();
+        e.x += e.dx; e.y += e.dy;
+        if (e.x < 0 || e.x > canvas.width) e.dx *= -1;
+        if (e.y < 0 || e.y > canvas.height) e.dy *= -1;
+      }
+      requestAnimationFrame(animar);
+    }
+    animar();
+window.addEventListener("mousemove", function(event) {
+  estrellas.push({
+    x: event.clientX,
+    y: event.clientY,
+    r: random(1, 3),
+    dx: random(-0.5, 0.5),
+    dy: random(-0.5, 0.5)
+  });
+});
+
+  </script>
+<footer>
+  <p>Hecho con 💛 por Ivi</p>
+</footer>
+</body>
+</html>
