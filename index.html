@@ -56,7 +56,12 @@
       font-size: 18px;
       font-weight: bold;
     }
-    nav a:hover { color: #ffd700; }
+    nav a:hover {
+  color: #ffd700;
+  text-shadow: 0 0 10px #ffd700, 0 0 20px #ffea00;
+  transform: scale(1.1);
+  transition: 0.3s;
+}
 
     /* Texto - arriba del canvas */
     .texto {
@@ -111,14 +116,13 @@
 @keyframes aparecerImagen {
   from { 
     opacity: 0; 
-    transform: translateY(50px); /* entra desde la derecha */
+    transform: translateY(50px); /* baja y aparece */
   }
   to { 
     opacity: 1; 
-    transform: translateX(0); 
+    transform: translateY(0); 
   }
 }
-
     .imagen img {
       max-width: 80%;
       height: auto;
@@ -211,10 +215,8 @@ footer {
 .tarjeta:nth-child(3) { animation-delay: 0.6s; }
 
 @keyframes aparecerTarjeta {
-  to { opacity: 1; transform: translateY(0); }
-}
-body {
-  cursor: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Plain_Yellow_Star.png/32px-Plain_Yellow_Star.png'), auto;
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .imagen img:hover {
   transform: scale(1.05);
@@ -250,13 +252,13 @@ body {
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
     loading="lazy"></iframe>
 <div class="tarjeta" style="background-image: url(https://i.pinimg.com/736x/4c/6d/08/4c6d088724cd7004c98d94c65e5c0b72.jpg);">
-  <h3>🎨 Pasatiempos</h3>
-  <p>Lo que me gusta hacer en mi tiempo libre.</p>
+  <h3>Un rincón donde...</h3>
+  <p>lo simple se vuelve especial 🌠</p>
 </div>
 
 <div class="tarjeta" style="background-image: url(https://i.pinimg.com/736x/77/74/cf/7774cf5e3c42023ec9549e75ec958351.jpg);">
-  <h3>🎶 Artistas</h3>
-  <p>Mis cantantes y bandas favoritas.</p>
+  <h3>Hay belleza en...</h3>
+  <p>una idea, unas palabras, una canción.</p>
 </div>
 
 </div>
@@ -301,7 +303,7 @@ window.addEventListener("mousemove", function(event) {
 
   </script>
 <footer>
-  <p>Hecho con 💛 por Ivi</p>
+  <p>Hecho con 💛 por Iviana Garcia</p>
 </footer>
 </body>
 </html>
