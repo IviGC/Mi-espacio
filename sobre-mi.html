@@ -237,30 +237,50 @@ h2 span {
   to   { opacity: 1; transform: scale(1.5); }
 }
 
-/* Estrellas fugaces */
+/* STAR (posición fija para no afectar layout) */
 .estrella-fugaz {
   position: fixed;
-  width: 6px;
-  height: 2px;
-  background: #fff;
+  width: 10px;
+  height: 10px;
+  background: white;
   border-radius: 50%;
-  opacity: 0.8;
-  transform: rotate(-45deg);
-  animation-name: cruzar;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: center;
+  /* la duración se lee desde --dur */
+  animation: fugaz var(--dur, 1.6s) linear forwards;
+  will-change: transform, opacity;
 }
 
-@keyframes cruzar {
+/* RASTRO: lo colocamos hacia "atrás" usando left negativo.
+   Como el padre se rota con rotate(var(--angle)), la pseudo-elemento
+   también quedará rotado y alineado con la trayectoria. */
+.estrella-fugaz::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--trail, 160px)); /* queda atrás de la estrella */
+  width: var(--trail, 160px);
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+  transform: translateY(-50%); /* no rotamos aquí: la rotación la aplica el padre */
+  transform-origin: right center;
+  filter: blur(1px);
+}
+
+/* animación: rotar el eje y trasladar en X a lo largo de ese eje (→ diagonal) */
+@keyframes fugaz {
   0% {
-    transform: translate(0, 0) rotate(-45deg);
+    transform: rotate(var(--angle, 45deg)) translateX(0);
     opacity: 1;
   }
   100% {
-    transform: translate(120vw, 100vh) rotate(-45deg);
+    transform: rotate(var(--angle, 45deg)) translateX(var(--dist, 100vw));
     opacity: 0;
   }
 }
+
 
 /* Modifica tu CSS existente para el fondo */
 .fondo-parallax {
@@ -302,6 +322,67 @@ h2 span {
 .intro .imagen img {
   animation: flotarImagen 4s ease-in-out infinite, pulsoNeon 3s infinite;
 }
+.divisor span {
+  display: inline-block;
+  font-size: 22px;
+  margin: 0 5px;
+  animation: brillar 2s infinite alternate;
+}
+
+@keyframes brillar {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+    text-shadow: 0 0 5px #fff, 0 0 10px #a2d2dd;
+  }
+  to {
+    transform: translateY(-5px) scale(1.2);
+    opacity: 1;
+    text-shadow: 0 0 15px #8a36d2, 0 0 25px #a46c93;
+  }
+}
+.divisor {
+  text-align: center;
+  margin: 40px 0;
+  /* opcional: ajustar tamaño global del divisor */
+  font-size: 22px;
+  z-index: 5;
+}
+
+.divisor span {
+  display: inline-block;
+  margin: 0 6px;
+  transform-origin: center;
+  /* animación principal (cada span tendrá su delay por nth-child) */
+  animation: parpadeoDivisor 2.6s ease-in-out infinite;
+}
+
+/* delays distintos para que no vayan sincronizadas */
+.divisor span:nth-child(1) { animation-delay: 0s; }
+.divisor span:nth-child(2) { animation-delay: 0.45s; }
+.divisor span:nth-child(3) { animation-delay: 0.9s; }
+
+/* keyframes: movimiento ligero + brillo */
+@keyframes parpadeoDivisor {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+    text-shadow: 0 0 4px rgba(255,255,255,0.15);
+  }
+  45% {
+    transform: translateY(-6px) scale(1.25);
+    opacity: 1;
+    text-shadow: 0 0 14px #A2D2DD, 0 0 8px #ffd700;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.65;
+    text-shadow: 0 0 4px rgba(255,255,255,0.15);
+  }
+}
+.estrella-brillo, .estrella-fugaz, .intro .imagen img {
+  will-change: transform, opacity;
+}
   </style>
 </head>
 <body>
@@ -336,7 +417,13 @@ h2 span {
 </section>
 
 
-    <div class="divisor">✨ ✨ ✨</div>
+
+<div class="divisor">
+  <span>✨</span>
+  <span>✨</span>
+  <span>✨</span>
+</div>
+
 
   <section class="gustos">
   <h2>✨ Cosas que me inspiran ✨</h2>
@@ -356,7 +443,12 @@ h2 span {
   </div>
 </section>
 
-    <div class="divisor">✨ ✨ ✨</div>
+<div class="divisor">
+  <span>✨</span>
+  <span>✨</span>
+  <span>✨</span>
+</div>
+
 
 <section class="extra">
   <h2>💖 Algo más de mí</h2>
@@ -390,7 +482,7 @@ h2 span {
     secciones.forEach(sec => observar.observe(sec));
 
 // Crear 50 estrellas estáticas con tiempos aleatorios
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 25; i++) {
   const estrella = document.createElement("div");
   estrella.classList.add("estrella-brillo");
 
@@ -406,26 +498,49 @@ for (let i = 0; i < 50; i++) {
   document.body.appendChild(estrella);
 }
 
-// Estrellas fugaces (Función)
-function crearEstrellaFugaz() {
-  const estrella = document.createElement("div");
-  estrella.classList.add("estrella-fugaz");
-  
-  // Dirección aleatoria
-  const direccion = Math.random() > 0.5 ? 1 : -1;
-  estrella.style.left = direccion === 1 ? "-10vw" : "110vw";
-  estrella.style.top = Math.random() * 50 + "vh";
-  estrella.style.transform = `rotate(${direccion === 1 ? -45 : 45}deg)`;
+function crearFugaz() {
+  const estrella = document.createElement('div');
+  estrella.className = 'estrella-fugaz';
 
-  const duracion = 1 + Math.random() * 2;
-  estrella.style.animationDuration = duracion + "s";
+  // Posición inicial: arriba/mitad superior (para que "caiga" hacia abajo)
+  const startX = Math.random() * window.innerWidth;
+  const startY = Math.random() * (window.innerHeight * 0.45); // arriba mitad
+
+  estrella.style.left = startX + 'px';
+  estrella.style.top = startY + 'px';
+
+  // Ángulo: elegimos entre 20° y 65° (derecha abajo) o su signo opuesto (izq abajo)
+  const baseAngle = 20 + Math.random() * 45; // 20..65
+  const sign = Math.random() > 0.5 ? 1 : -1;
+  const angleDeg = baseAngle * sign;
+  estrella.style.setProperty('--angle', angleDeg + 'deg');
+
+  // Distancia a recorrer (asegura que cruce la pantalla)
+  const distancia = Math.max(window.innerWidth, window.innerHeight) * (0.9 + Math.random() * 0.6);
+  estrella.style.setProperty('--dist', distancia + 'px');
+
+  // Longitud del rastro (proporcional a la distancia pero limitada)
+  const trail = Math.min(Math.max(distancia * 0.55, 120), 420);
+  estrella.style.setProperty('--trail', trail + 'px');
+
+  // Duración de la animación (aleatoria para naturalidad)
+  const dur = 0.9 + Math.random() * 1.2; // 0.9s - 2.1s
+  estrella.style.setProperty('--dur', dur + 's');
 
   document.body.appendChild(estrella);
-  setTimeout(() => estrella.remove(), duracion * 1000);
-}
-// RESTAURADO: Intervalo para que las estrellas fugaces aparezcan continuamente
-setInterval(crearEstrellaFugaz, 700);
 
+  // quitar del DOM cuando termine la animación
+  setTimeout(() => {
+    estrella.remove();
+  }, (dur + 0.1) * 1000);
+}
+
+// intervalo no constante para que parezca más natural
+(function startFugaces() {
+  crearFugaz();
+  const next = 800 + Math.random() * 2200; // 0.8s - 3s
+  setTimeout(startFugaces, next);
+})();
 
 // Código del zoom parallax del fondo
 const fondo = document.querySelector('.fondo-parallax');
@@ -446,5 +561,52 @@ window.addEventListener('scroll', () => {
   fondo.style.transform = `scale(${nuevaEscala})`;
 });
   </script>
+<script>
+  // crear el elemento del cursor
+  const meteor = document.createElement('img');
+  meteor.src = 'https://cdn-icons-png.flaticon.com/512/7076/7076788.png'; // cambia por tu imagen
+  meteor.alt = '';
+  meteor.style.position = 'fixed';
+  meteor.style.width = '36px';
+  meteor.style.height = '36px';
+  meteor.style.pointerEvents = 'none'; // que no bloquee clics
+  meteor.style.transform = 'translate(-50%, -50%)';
+  meteor.style.transition = 'transform 0.08s linear, opacity 0.2s';
+  meteor.style.zIndex = '9999';
+  meteor.style.opacity = '1';
+  document.body.appendChild(meteor);
+
+  // seguir el cursor
+  window.addEventListener('mousemove', (e) => {
+    meteor.style.left = e.clientX + 'px';
+    meteor.style.top = e.clientY + 'px';
+  });
+
+  // opcional: pequeño "pop" al hacer click
+  window.addEventListener('click', () => {
+    meteor.style.transform = 'translate(-50%, -50%) scale(1.4)';
+    setTimeout(() => meteor.style.transform = 'translate(-50%, -50%) scale(1)', 120);
+  });
+
+  // opcional: ocultar en dispositivos táctiles
+  function isTouch() {
+    return ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  }
+  if (isTouch()) meteor.style.display = 'none';
+
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const scrollPosition = window.pageYOffset;
+      let nuevaEscala = 1 + scrollPosition * 0.0002;
+      if (nuevaEscala > 1.3) nuevaEscala = 1.3;
+      fondo.style.transform = `scale(${nuevaEscala})`;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+</script>
 </body>
 </html>
