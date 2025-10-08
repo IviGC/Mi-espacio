@@ -1,0 +1,347 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pasatiempos</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Quicksand&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: url("https://i.pinimg.com/originals/57/b9/e5/57b9e5526b70cecc4558a284330e0c1d.gif") no-repeat center center fixed;
+      background-size: cover;
+      overflow-x: hidden;
+      color: #f7f6f4;
+    }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.20);
+  z-index: 0;
+}
+h1 {
+  background: linear-gradient(90deg, #fceec7, #f3c8dd, #fceec7);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brillo 6s linear infinite;
+}
+@keyframes brillo {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+h1:hover {
+  text-shadow: 0 0 25px #f3c8dd, 0 0 40px #cfb580;
+  transition: 0.4s;
+}
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      text-align: center;
+      padding: 15px 0;
+      z-index: 30;
+      backdrop-filter: blur(6px);
+    }
+    nav a {
+      margin: 0 15px;
+      color: #fdfdfd;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #cfb580;
+      text-shadow: 0 0 10px #cfb580;
+    }
+
+    .particula {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #d183a9, #f3c8dd);
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: flotar 8s infinite ease-in-out;
+      z-index: 0;
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-40px) scale(1.3); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    }
+
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 950px;
+      margin: 120px auto;
+      text-align: center;
+      padding: 20px;
+    }
+main {
+  margin: 100px auto 60px;
+  padding: clamp(15px, 3vw, 40px);
+}
+
+main {
+  animation: aparecer 1.2s ease-in-out;
+}
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: #fceec7;
+      font-size: 42px;
+      text-shadow: 0 0 15px rgba(255, 230, 180, 0.8);
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #f7f3e9;
+    }
+
+    .tarjetas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .tarjeta {
+      position: relative;
+      background: rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: all 0.4s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .tarjeta::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(207,181,128,0.5), transparent 30%);
+      animation: rotar 4s linear infinite;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .tarjeta:hover::before {
+      opacity: 1;
+    }
+.tarjeta:hover {
+  background: rgba(255,255,255,0.18);
+}
+    @keyframes rotar {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 25px rgba(207,181,128,0.5);
+    }
+
+    .tarjeta img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tarjeta h3 {
+      color: #f3c8dd;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px rgba(207,181,128,0.5);
+    }
+
+    .tarjeta p {
+      color: #fdfaf6;
+      font-size: 16px;
+    }
+
+    /* Efecto de brillo al hacer clic */
+    .destello {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, transparent 70%);
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      animation: flash 0.6s ease-out forwards;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0.8; transform: scale(0.9); }
+      100% { opacity: 0; transform: scale(1.3); }
+    }
+.cursor-luz {
+  animation: colorShift 6s infinite alternate;
+}
+@keyframes colorShift {
+  0% { background: radial-gradient(circle, rgba(255,230,180,0.9), rgba(243,200,221,0.5), transparent 80%); }
+  50% { background: radial-gradient(circle, rgba(202,124,196,0.9), rgba(255,240,200,0.5), transparent 80%); }
+  100% { background: radial-gradient(circle, rgba(255,180,180,0.9), rgba(207,181,128,0.5), transparent 80%); }
+}
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="sobre-mi.html">Sobre mí</a>
+    <a href="pasatiempos.html">Pasatiempos</a>
+    <a href="artistas.html">Artistas</a>
+  </nav>
+
+  <main>
+    <h1>Mis Pasatiempos</h1>
+    <p>Me gusta dedicar tiempo a las cosas que despiertan mi creatividad y curiosidad.  
+    Cada uno de estos pasatiempos me inspira de una manera diferente ✨</p>
+
+    <div class="tarjetas">
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/3d/ed/13/3ded13044b5b06f107f8bcfde9ab20e9.gif" alt="Dibujo">
+        <h3>Dibujar y pintar</h3>
+        <p>Cada trazo es una combinación de emociones y creatividad plasmada en papel.</p>
+      </div>
+
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/85/93/bf/8593bf9569a706a55acc745bbd9f25c6.gif" alt="Edición">
+        <h3>Editar videos</h3>
+        <p>Combinar imágenes, música y animaciones para contar una historia es una de las cosas que más disfruto.</p>
+      </div>
+
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/71/81/f3/7181f32283146af7052e54946aaec210.gif" alt="Aprender">
+        <h3>Aprender cosas nuevas</h3>
+        <p>Desde biología hasta arte digital, me encanta descubrir cómo funcionan las cosas e intentar cosas nuevas.</p>
+      </div>
+
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/e0/f1/76/e0f17688bb05c49e009511adf8ee6c42.gif" alt="Música">
+        <h3>Escuchar música</h3>
+        <p>Las melodías son hermosas. Cada canción transmite emociones e historias únicas.</p>
+      </div>
+
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/47/df/5a/47df5a1875f80835cc1614bc0b8471e1.gif" alt="Animación">
+        <h3>Animar</h3>
+        <p>Es increíble como un grupo de dibujos puede contar una historia y cobrar vida.</p>
+      </div>
+
+      <div class="tarjeta">
+        <img src="https://i.pinimg.com/originals/b0/16/6b/b0166be3513ea7ade6d36cbb15bb9e86.gif" alt="Naturaleza">
+        <h3>Escribir</h3>
+        <p>Cada párrafo es una puerta a un nuevo mundo, con personajes e historias emocionantes.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sonido suave al hacer clic -->
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_93a3a2a4e4.mp3?filename=soft-click-131425.mp3"></audio>
+
+  <script>
+    // Crear partículas flotantes
+    const cantidad = 40;
+    for (let i = 0; i < cantidad; i++) {
+      const p = document.createElement("div");
+      p.classList.add("particula");
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.animationDelay = Math.random() * 5 + "s";
+      p.style.animationDuration = 6 + Math.random() * 4 + "s";
+      document.body.appendChild(p);
+    }
+
+    // Efecto de brillo y sonido al hacer clic
+    const tarjetas = document.querySelectorAll(".tarjeta");
+    const sonido = document.getElementById("clickSound");
+
+    tarjetas.forEach(tarjeta => {
+      tarjeta.addEventListener("click", e => {
+        const destello = document.createElement("div");
+        destello.classList.add("destello");
+        tarjeta.appendChild(destello);
+        sonido.currentTime = 0;
+        sonido.play();
+        setTimeout(() => destello.remove(), 600);
+      });
+    });
+  </script>
+<!-- Cursor luminoso -->
+<style>
+  .cursor-luz {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 230, 180, 0.9), rgba(243, 200, 221, 0.5), transparent 80%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    filter: blur(2px);
+    transform: translate(-50%, -50%);
+    z-index: 100;
+  }
+</style>
+
+<script>
+  const cursor = document.createElement("div");
+  cursor.classList.add("cursor-luz");
+  document.body.appendChild(cursor);
+
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+
+  // Seguir el movimiento del mouse
+  document.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // Movimiento suave
+  function animarCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+    requestAnimationFrame(animarCursor);
+  }
+  animarCursor();
+
+  // Pequeño destello al hacer clic
+  document.addEventListener("click", () => {
+    cursor.style.transform += " scale(1.6)";
+    cursor.style.opacity = "0.6";
+    setTimeout(() => {
+      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) scale(1)`;
+      cursor.style.opacity = "1";
+    }, 200);
+  });
+</script>
+
+</body>
+</html>
