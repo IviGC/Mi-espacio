@@ -256,6 +256,16 @@
 .tarjeta:nth-child(1) { animation-delay: 0s; }
 .tarjeta:nth-child(2) { animation-delay: 0.5s; }
 .tarjeta:nth-child(3) { animation-delay: 1s; }
+body {
+  opacity: 0;
+  animation: aparecer 1.8s ease forwards;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+  }
+}
 
 </style>
 </head>
